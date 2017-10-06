@@ -1,5 +1,7 @@
 package org.alok.java.msg.resources;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
@@ -11,11 +13,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
+import javax.ws.rs.core.UriInfo;
 import org.alok.java.msg.model.Message;
 import org.alok.java.msg.resources.beans.MessageFilterBeans;
 import org.alok.java.msg.service.MessageSerivce;
@@ -42,10 +43,13 @@ public class MessageResource {
 
 
 	@POST
-	public Response addMessage(Message message){
-
+	public Response addMessage(Message message , @Context UriInfo uriInfo) throws URISyntaxException{
+		
 		Message newMessage = messageService.addMessage(message);
-		return Response.status(Status.CREATED).entity(newMessage).build();
+		String newId = String.valueOf(newMessage.getId());
+		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+		
+		return Response.created(uri).entity(newMessage).build();
 
 	}
 
