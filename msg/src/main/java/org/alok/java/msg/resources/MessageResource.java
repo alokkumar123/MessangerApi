@@ -43,11 +43,10 @@ public class MessageResource {
 
 	@POST
 	public Response addMessage(Message message){
-		messageService.addMessage(message);
-		Response.status(Status.CREATED).entity(message).build();
-		
-		optimizer for eclipse
-		//return messageService.addMessage(message);
+
+		Message newMessage = messageService.addMessage(message);
+		return Response.status(Status.CREATED).entity(newMessage).build();
+
 	}
 
 	@PUT
