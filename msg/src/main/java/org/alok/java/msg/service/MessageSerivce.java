@@ -5,7 +5,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.DataBindingException;
+
 import org.alok.java.msg.database.DataBaseClass;
+import org.alok.java.msg.exception.DataNotFoundException;
 import org.alok.java.msg.model.Message;
 
 public class MessageSerivce {
@@ -45,7 +48,11 @@ public class MessageSerivce {
 	}
 
 	public Message getMessage(long id){
-		return messages.get(id);
+		Message message =messages.get(id);
+		if(message == null){
+			throw new DataNotFoundException("Message id "+ id + " not found");
+		}else
+			return message;
 	}
 
 
